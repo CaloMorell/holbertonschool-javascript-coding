@@ -1,20 +1,20 @@
 #!/usr/bin/node
 const fs = require('fs');
 
-// Check if the correct number of arguments is provided
+// Verifica si se proporciona el número correcto de argumentos
 if (process.argv.length !== 3) {
-  console.error('Usage: node readfile.js <file_path>');
-  process.exit(1);
+console.error('Uso: node readfile.js <ruta_del_archivo>');
+process.exit(1);
 }
 
 const filePath = process.argv[2];
 
-// Read the file content in utf-8
+// Lee el contenido del archivo en utf-8
 fs.readFile(filePath, 'utf-8', (err, data) => {
-  if (err) {
-    console.error('Error reading the file:', err);
-  } else {
-    console.log('File content:');
+if (err) {
+    console.error('Error al leer el archivo:', err);
+} else {
+    console.log('Contenido del archivo:');
     console.log(data);
-  }
+}
 });
