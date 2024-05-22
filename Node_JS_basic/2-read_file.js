@@ -1,21 +1,34 @@
+/* eslint-disable */
 const fs = require('fs');
 
-const countStudents = (aPath) => {
+function countStudents(path) {
+  let data;
+
   try {
-    let data = fs.readFileSync(aPath, 'utf8').toString().split('\n');
-    data = data.slice(1, data.length - 1);
-    console.log(`Number of students: ${data.length}`);
-    const subjects = {};
-    for (const row of data) {
-      const student = row.split(',');
-      if (!subjects[student[3]]) subjects[student[3]] = [];
-      subjects[student[3]].push(student[0]);
-    }
-    for (const subject in subjects) {
-      if (subject) console.log(`Number of students in ${subject}: ${subjects[subject].length}. List: ${subjects[subject].join(', ')}`);
-    }
-  } catch (error) {
+    data = fs.readFileSync(path, 'utf8');
+  } catch (err) {
     throw new Error('Cannot load the database');
   }
-};
+
+  const lines = data.toString().split('\n');
+  const students = lines.filter((line) => line).map((line) => line.split(','));
+
+  const num_students = students.length ? students.length - 1 : 0;
+  console.log(`Number of students: ${num_students}`);
+
+  const fields = {};
+  for (const student in students) {
+    if (student !== 0) {
+        if (!fields[students[student][3]]) fields[students[student][3]] = [];
+        fields[students[student][3]].push(students[student][0]);
+    }
+  }
+
+  delete fields.field;
+
+  for (const field in fields) {
+    console.log(`Number of students in ${field}: ${fields[field].length}. List: ${fields[field].join(', ')}`);
+  }
+}
+
 module.exports = countStudents;
